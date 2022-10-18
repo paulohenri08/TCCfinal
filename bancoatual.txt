@@ -1,0 +1,154 @@
+CREATE DATABASE AstroCars;
+USE AstroCars
+
+
+CREATE TABLE VEICULOS(
+Id_Veiculo int primary key AUTO_INCREMENT not null,
+Imagem VARCHAR(280) NOT NULL,
+Preco numeric(5,2) NOT NULL,
+Modelo VARCHAR(50) NOT NULL,
+Marca VARCHAR(50) NOT NULL,
+Placa VARCHAR(7) NOT NULL,
+TipoCombustivel VARCHAR(20) NOT NULL,
+Chassi VARCHAR(17) NOT NULL,
+Cor VARCHAR(20) NOT NULL,
+AnoFabricacao INT NOT NULL,
+AnoModelo INT NOT NULL,
+RENAVAN BIGINT NOT NULL,
+Descricao VARCHAR(500) NOT NULL,
+Genero VARCHAR(20) NOT NULL
+);
+
+
+CREATE TABLE CLIENTES(
+Id_Cliente int primary key AUTO_INCREMENT not null,
+Nome VARCHAR(80) NOT NULL,
+TipoDocumento VARCHAR(5) NOT NULL,
+Documento VARCHAR(11) NOT NULL,
+Imagem VARCHAR(280),
+Telefone INT NOT NULL,
+Endereco VARCHAR(50) NOT NULL,
+Cidade VARCHAR(50) NOT NULL,
+Estado VARCHAR(50) NOT NULL,
+DataNascimento DATE NOT NULL,
+CNH VARCHAR(11) NOT NULL,
+Sexo VARCHAR(10) NOT NULL,
+Email VARCHAR(100) NOT NULL,
+Senha VARCHAR(25) NOT NULL,
+Status_Cliente BIT NOT NULL
+);
+
+CREATE TABLE FUNCIONARIOS(
+Id_Funcionarios int primary key AUTO_INCREMENT not null,
+Nome VARCHAR(80) NOT NULL,
+CPF VARCHAR(11) NOT NULL,
+Cargo VARCHAR(40) NOT NULL,
+Imagem VARCHAR(280) NOT NULL,
+Telefone INT NOT NULL,
+Endereco VARCHAR(50) NOT NULL,
+Cidade VARCHAR(50) NOT NULL,
+Estado VARCHAR(50) NOT NULL,
+DataNascimento DATE NOT NULL,
+Sexo VARCHAR(10) NOT NULL,
+Email VARCHAR(100) NOT NULL,
+Senha VARCHAR(25) NOT NULL,
+Status_Funcionario BIT NOT NULL
+);
+
+CREATE TABLE SITUACAOCARRO(
+Id_Situacao int primary key not null,
+Id_Veiculo INT NOT NULL,
+SITUACAO VARCHAR(100) NOT NULL,
+CONSTRAINT fk_situacaoveiculos FOREIGN KEY (Id_Veiculo) REFERENCES VEICULOS (Id_Veiculo)
+);
+
+CREATE TABLE ALUGUEL(
+Id_Aluguel int primary key not null,
+Id_Veiculo INT NOT NULL,
+Id_Cliente INT NOT NULL,
+data_retirada date not null,
+data_devolucao date not null,
+dias_alugados int not null,
+preco_diaria numeric(5,2) not null,
+Preco_final numeric(5,2) not null,
+CONSTRAINT fk_veiculos FOREIGN KEY (Id_Veiculo) REFERENCES VEICULOS (Id_Veiculo),
+CONSTRAINT fk_clientes FOREIGN KEY (Id_Cliente) REFERENCES CLIENTES (Id_Cliente)
+);
+
+SELECT preco_diaria , data_devolucao-data_retirada As dias_alugados
+FROM ALUGUEL;
+
+DELIMITER //
+
+
+create procedure cadastraVeiculo(
+Imagem VARCHAR(300),
+Preco numeric(5,2),
+Modelo VARCHAR(50),  
+Marca VARCHAR(50),
+Placa VARCHAR(7),
+TipoCombustivel VARCHAR(20), 
+Chassi VARCHAR(17), 
+Cor VARCHAR(20), 
+AnoFabricacao INT,
+AnoModelo INT,
+RENAVAN BIGINT, 
+Descricao VARCHAR(500),
+Genero VARCHAR(20)
+)
+
+
+begin
+insert into VEICULOS(Imagem, Preco, Modelo, Marca, Placa, TipoCombustivel, Chassi, Cor, AnoFabricacao, AnoModelo, RENAVAN, Descricao, Genero)
+values (Imagem, Preco, Modelo, Marca, Placa, TipoCombustivel, Chassi, Cor, AnoFabricacao, AnoModelo, RENAVAN, Descricao, Genero);
+END //
+
+DELIMITER ;
+
+
+SELECT * FROM VEICULOS;
+
+CALL cadastraVeiculo ('honda-accord-hybrid_1.jpg' , 250.00, 'Accord Hybrid 2.0', 'Honda', 'BRA6T39', 'Gasolina', '42JY1K00987MO76QE', 'Branco', 2021, 2021, 00476877523 ,'Com motor 2.0 turbo de 256 cv e câmbio automático de 10 marchas. Mas o que chama atenção é a mecânica. Isso porque tem um motor 2.0 a gasolina de ciclo Atkinson e naturalmente aspirado que entrega até 145 cv (a 6.200 rpm) e 17,8 kgfm (a 3.500 giros), além de dois motores elétricos, sendo que um deles atua apenas como gerador de energia.', 'Sedã');
+CALL cadastraVeiculo ('honda-accord-hybrid_1_cinza.jpg' , 250.00, 'Accord Hybrid 2.0', 'Honda', 'BYU6K89', 'Gasolina', '42JY9L0086T15VDJ4', 'Preto', 2021, 2021, 00778965460 ,'Com motor 2.0 turbo de 256 cv e câmbio automático de 10 marchas. Mas o que chama atenção é a mecânica. Isso porque tem um motor 2.0 a gasolina de ciclo Atkinson e naturalmente aspirado que entrega até 145 cv (a 6.200 rpm) e 17,8 kgfm (a 3.500 giros), além de dois motores elétricos, sendo que um deles atua apenas como gerador de energia.', 'Sedã');
+CALL cadastraVeiculo ('honda-accord-hybrid_1.jpg' , 250.00, 'Accord Hybrid 2.0', 'Honda', 'BTB6T38', 'Gasolina', '42JY78HJY54EDF567', 'Cinza', 2021, 2021, 00478877098 ,'Com motor 2.0 turbo de 256 cv e câmbio automático de 10 marchas. Mas o que chama atenção é a mecânica. Isso porque tem um motor 2.0 a gasolina de ciclo Atkinson e naturalmente aspirado que entrega até 145 cv (a 6.200 rpm) e 17,8 kgfm (a 3.500 giros), além de dois motores elétricos, sendo que um deles atua apenas como gerador de energia.', 'Sedã');
+CALL cadastraVeiculo ('volkswagen-jetta_1_cinza.jpg' , 250.00, 'Jetta 2.0 Tsi', 'Volkswagen', 'NJA6T91', 'Gasolina', '87TH7P0087MO77T34', 'Cinza', 2020, 2019, 00887457982 ,'Ocupantes=5; Tração=dianteira; Direção=elétrica; Motorizaçã0=2.0; Potência(cv)=230; Torque(kgf.m)=35,7; Velocidade Máxima(km/h)=250; Consumo cidade(km/l)=9,9; Consumo estrada(km/l)=12,5', 'Sedã');
+CALL cadastraVeiculo ('volkswagen-voyage_1_prata.jpg' , 69.99, 'Voyage 1.6 VHT Seleção', 'Volkswagen', 'JOP9J02', 'Flex', '845P6J99885NU76E4', 'Prata', 2018, 2015, 00774901522 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.6; Consumo cidade(km/l)=7,3; Consumo estrada (km/l)=9,4', 'Sedã');
+CALL cadastraVeiculo ('volkswagen-voyage_1_prata.jpg' , 69.99, 'Voyage 1.6 VHT Seleção', 'Volkswagen', 'ATR9J07', 'Flex', '867H8N99876FE36Y0', 'Prata', 2018, 2015, 00339055643 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.6; Consumo cidade(km/l)=7,3; Consumo estrada (km/l)=9,4', 'Sedã');
+CALL cadastraVeiculo ('volkswagen-voyage_1_prata.jpg' , 69.99, 'Voyage 1.6 VHT Seleção', 'Volkswagen', 'JPK8O20', 'Flex', '996T6L77093KP22R7', 'Prata', 2018, 2015, 00983356756 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.6; Consumo cidade(km/l)=7,3; Consumo estrada (km/l)=9,4', 'Sedã');
+CALL cadastraVeiculo ('toyota-corolla2020_1_vinho.jpg' , 250.00, 'Corolla 2.0 GLi', 'Toyota', 'KLQ2D02', 'Flex', '142H0K98325JJ03FS', 'Vinho', 2021, 2020, 004498201264 ,'Ocupantes=5; Câmbio=CVT com modo manual; Tração=dianteira; Direção=elétrica; Motorização=2.0; Potência(cv)=177; Torque(kgf.m)=21,4', 'Sedã');
+CALL cadastraVeiculo ('toyota-corolla2016_1_preto.jpg' , 98.89, 'Corolla 2.0 XEi', 'Toyota', 'KLM7I82', 'Flex', '302T4G8215NU7J7R4', 'Preto', 2016, 2016, 00648390123 ,'Ocupantes=5; Câmbio=CVT com modo manual; Tração=dianteira; Direção=elétrica; Motorização=2.0; Potência(cv)=154; Torque(kgf.m)=20,3; Velocidade Máxima(km/h)=193; Consumo cidade(km/l)=7,3; Consumo estrada(km/l)=9,1', 'Sedã');
+CALL cadastraVeiculo ('chevrolet-cruze_1_branco.jpg' , 76.00, 'Cruze LT 1.8', 'Chevrolet', 'BDA8L31', 'Flex', '133P6T54431QS55H7', 'Branco', 2016, 2014, 00589103645 ,'Ocupantes=5; Câmbio=automática com modo manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=144; Torque(kgf.m)=18,86; Velocidade Máxima(km/h)=197; Consumo cidade(km/l)=6,6; Consumo estrada(km/l)=9,3 ', 'Sedã');
+CALL cadastraVeiculo ('chevrolet-cruze_1_branco.jpg' , 76.00, 'Cruze LT 1.8', 'Chevrolet', 'DAY0J70', 'Flex', '203H7Y72276G901SL', 'Branco', 2016, 2014, 00901829375 ,'Ocupantes=5; Câmbio=automática com modo manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=144; Torque(kgf.m)=18,86; Velocidade Máxima(km/h)=197; Consumo cidade(km/l)=6,6; Consumo estrada(km/l)=9,3 ', 'Sedã');
+CALL cadastraVeiculo ('chevrolet-cruze_1_preto.jpg' , 76.00, 'Cruze LT 1.8', 'Chevrolet', 'BYE9X15', 'Flex', '900R6Y28301J55598', 'Preto', 2016, 2014, 00893278918 ,'Ocupantes=5; Câmbio=automática com modo manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=144; Torque(kgf.m)=18,86; Velocidade Máxima(km/h)=197; Consumo cidade(km/l)=6,6; Consumo estrada(km/l)=9,3 ', 'Sedã');
+CALL cadastraVeiculo ('chevrolet-cruze_1_preto.jpg' , 76.00, 'Cruze LT 1.8', 'Chevrolet', 'BDA8L15', 'Flex', '084F7H48941J11738', 'Preto', 2016, 2014, 00901839239 ,'Ocupantes=5; Câmbio=automática com modo manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=144; Torque(kgf.m)=18,86; Velocidade Máxima(km/h)=197; Consumo cidade(km/l)=6,6; Consumo estrada(km/l)=9,3 ', 'Sedã');
+CALL cadastraVeiculo ('chevrolet-cobalt_1_branco.jpg' , 69.99, 'Cobalt LTZ 1.4', 'Chevrolet', 'NOJ8L41', 'Flex', '452D8J09009JJ87T6', 'Prata', 2015, 2014, 00774901522 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.4; Potência(cv)=102; Torque(kgf.m)=13,05; Velocidade Máxima(km/h)=170; Consumo cidade(km/l)=7,2; Consumo estrada(km/l)=9,9', 'Sedã');
+CALL cadastraVeiculo ('chevrolet-classic_1_cinza.jpg' , 49.99, 'Classic LS 1.0', 'Chevrolet', 'LOU7H47', 'Flex', '980R5G85002SDD0I8', 'Cinza', 2016, 2016, 00580465783 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.0; Potência(cv)=78; Torque(kgf.m)=9,7; Velocidade Máxima(km/h)=166', 'Sedã');
+CALL cadastraVeiculo ('fiat-siena_1_vermelho.jpg' , 69.99, 'Grand Siena Attractive 1.0', 'Fiat', 'STO7L80', 'Flex', '298J9K30967SP08T7', 'Vermelho', 2020, 2019, 00638291728 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.0; Potência(cv)=75; Torque(kgf.m)=10,1; Velocidade Máxima(km/h)=161; Consumo cidade(km/l)=7,9; Consumo estrada(km/l)=9,5', 'Sedã');
+CALL cadastraVeiculo ('chevrolet-corsa_1_preto.jpg' , 49.99, 'Corsa Hatch Maxx 1.4', 'Chevrolet', 'GRB9G94', 'Flex', '556F4F77790BG87B4', 'Preto', 2014, 2012, 00785392543 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.4; Potência(cv)=105; Torque(kgf.m)=13,36; Velocidade Máxima(km/h)=176; Consumo cidade(km/l)=12,6; Consumo estrada(km/l)=17,5', 'Hatch');
+CALL cadastraVeiculo ('chevrolet-onix2020_1_azul.jpg' , 59.99, 'Onix LT 1.0 Turbo', 'Chevrolet', 'FRE7T34', 'Flex', '423T6T537764P07B3', 'azul seeker', 2021, 2020, 00556639976 ,'Ocupantes=5; Câmbio=manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.0; Potência(cv)=116; Torque(kgf.m)=63,4; Velocidade Máxima(km/h)=187; Consumo cidade(km/l)=9,4; Consumo estrada(km/l)=11,2', 'Hatch');
+CALL cadastraVeiculo ('chevrolet-onix2020_1_azul.jpg' , 59.99, 'Onix LT 1.0 Turbo', 'Chevrolet', 'RTE8U02', 'Flex', '788U2W707388H88J2', 'azul seeker', 2021, 2020, 00779830582 ,'Ocupantes=5; Câmbio=manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.0; Potência(cv)=116; Torque(kgf.m)=63,4; Velocidade Máxima(km/h)=187; Consumo cidade(km/l)=9,4; Consumo estrada(km/l)=11,2', 'Hatch');
+CALL cadastraVeiculo ('chevrolet-onix2020_1_vermelho.jpg' , 59.99, 'Onix LT 1.0 Turbo', 'Chevrolet', 'GRU3E75', 'Flex', '884R8U503640K08I9', 'vermelho carmim', 2021, 2020, 00153745277 ,'Ocupantes=5; Câmbio=manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.0; Potência(cv)=116; Torque(kgf.m)=63,4; Velocidade Máxima(km/h)=187; Consumo cidade(km/l)=9,4; Consumo estrada(km/l)=11,2', 'Hatch');
+CALL cadastraVeiculo ('chevrolet-onix2017_1_preto.jpg' , 59.99, 'Onix 1.4 LTZ', 'Chevrolet', 'AQW9G45', 'Flex', '324G5T53787JJ87K7', 'Preto', 2017, 2017, 00772947215 ,'Ocupantes=5; Câmbio=manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.4; Potência(cv)=	106; Torque(kgf.m)=13,9; Consumo cidade(km/l)=8,6; Consumo estrada(km/l)=10,2', 'Hatch');
+CALL cadastraVeiculo ('chevrolet-onix2017_1_branco.jpg' , 59.99, 'Onix 1.4 LTZ', 'Chevrolet', 'JJK9F59', 'Flex', '784FR674GT56234D0', 'Branco', 2017, 2017, 00547302577 ,'Ocupantes=5; Câmbio=manual de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.4; Potência(cv)=	106; Torque(kgf.m)=15,9; Consumo cidade(km/l)=8,6; Consumo estrada(km/l)=10,2', 'Hatch');
+CALL cadastraVeiculo ('renault-sandero_1_prata.jpg' , 59.99, 'Sandero GT Line 1.6', 'Renault', 'HMJ4D54', 'Flex', '452DF567FG231FR23', 'Prata', 2018, 2018, 00447204528 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=eletro-hidráulica; Motorização=1.6; Potência(cv)=118; Torque(kgf.m)=13,36; Velocidade Máxima(km/h)=185; Consumo cidade(km/l)=8,4; Consumo estrada(km/l)=8,9', 'Hatch');
+CALL cadastraVeiculo ('ford-ka_1_marrom.jpg' , 59.99, 'Ka 1.5 Freestyle', 'Ford', 'NMP2W38', 'Flex', '254T7GH873NJ905L9', 'Marrom Trancoso', 2019, 2019, 00476802745 ,'Ocupantes=5; Câmbio=automática com modo manual de 5 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.5; Potência(cv)=136; Torque(kgf.m)=16,1', 'Hatch');
+CALL cadastraVeiculo ('ford-ka_1_branco.jpg' , 59.99, 'Ka 1.5 Freestyle', 'Ford', 'JKP9I73', 'Flex', '738I983HDP73JU4G6', 'Branco', 2020, 2019, 00984038425 ,'Ocupantes=5; Câmbio=automática com modo manual de 5 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.5; Potência(cv)=136; Torque(kgf.m)=16,1', 'Hatch');
+CALL cadastraVeiculo ('ford-fiesta_1_azul.jpg' , 59.99, 'Fiesta SEL 1.0 Ecoboost', 'Ford', 'JIM8G94', 'Gasolina', '897J8804520NH79R7', 'Azul', 2018, 2017, 00785392543 ,'Ocupantes=5; Câmbio=automática de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.0; Potência(cv)=125; Torque(kgf.m)=17,3; Consumo cidade(km/l)=17,3; Consumo estrada(km/l)=15,3', 'Hatch');
+CALL cadastraVeiculo ('hyundai-i30_1_prata.jpg' , 59.99, 'I30 1.8', 'Hyundai', 'HJU0I74', 'Gasolina', '407G6J30814BNJ7R3', 'Prata', 2017, 2016, 00520156398 ,'Ocupantes=5; Câmbio=automática de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=150; Torque(kgf.m)=18,2; Velocidade Máxima(km/h)=206; Consumo cidade(km/l)=9,2; Consumo estrada(km/l)=11,8', 'Hatch');
+CALL cadastraVeiculo ('hyundai-i30_1_prata.jpg' , 59.99, 'I30 1.8', 'Hyundai', 'LGT5G12', 'Gasolina', '319J08HT58D376HJ6', 'Prata', 2016, 2016, 00406836168 ,'Ocupantes=5; Câmbio=automática de 6 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=150; Torque(kgf.m)=18,2; Velocidade Máxima(km/h)=206; Consumo cidade(km/l)=9,2; Consumo estrada(km/l)=11,8', 'Hatch');
+CALL cadastraVeiculo ('hyundai-hb20_2018_1_preto.jpg' , 68.00, 'HB20 1.6 Comfort Plus', 'Hyundai', 'SET3G94', 'Flex', '365G8HY49D0476GT4', 'Preto', 2018, 2018, 00507836598 ,'Ocupantes=5; Câmbio=manual de 6 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.6; Potência(cv)=128; Torque(kgf.m)=16,5; Velocidade Máxima(km/h)=189; Consumo cidade(km/l)=8,1; Consumo estrada(km/l)=9,9', 'Hatch');
+CALL cadastraVeiculo ('hyundai-hb20_2018_1_vermelho.jpg' , 68.00, 'HB20 1.6 Comfort Plus', 'Hyundai', 'GOD4G08', 'Flex', '538FR162Y37DH45T6', 'vermelho', 2018, 2018, 00764067885 ,'Ocupantes=5; Câmbio=manual de 6 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.6; Potência(cv)=128; Torque(kgf.m)=16,5; Velocidade Máxima(km/h)=189; Consumo cidade(km/l)=8,1; Consumo estrada(km/l)=9,9', 'Hatch');
+CALL cadastraVeiculo ('hyundai-hb20_2015_1_vermelho.jpg' , 59.99, 'HB20 1.6 Spicy', 'Hyundai', 'SET3G94', 'Flex', 'GFR902KI5849DR0J4', 'Preto', 2015, 2015, 00940883512 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=hidráulica; Motorização=1.6; Potência(cv)=128; Torque(kgf.m)=16,5; Velocidade Máxima(km/h)=188; Consumo cidade(km/l)=7,7; Consumo estrada(km/l)=9,3', 'Hatch');
+CALL cadastraVeiculo ('fiat-argoHGT_1_azul.jpg' , 59.99, 'Argo HGT 1.8', 'Fiat', 'NGP7Y09', 'Flex', '281FG403639HG36F5', 'Azul', 2020, 2019, 00201937495 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.7; Potência(cv)=139; Torque(kgf.m)=19,3; Velocidade Máxima(km/h)=192; Consumo cidade(km/l)=7,8; Consumo estrada(km/l)=9,2', 'Hatch');
+CALL cadastraVeiculo ('fiat-argo_1_vermelho.jpg' , 59.99, 'Argo Drive GSR 1.3', 'Fiat', 'GTU9Y93', 'Flex', '394HH493KJ84UD6G7', 'Vermelho', 2019, 2019, 00778300294 ,'Ocupantes=5; Câmbio=manual sequencial com modo automático de 5 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.3; Potência(cv)=109; Torque(kgf.m)=14,2; Velocidade Máxima(km/h)=184; Consumo cidade(km/l)=8,98; Consumo estrada(km/l)=10', 'Hatch');
+CALL cadastraVeiculo ('nissan-kicks_1_preto.jpg' , 210.00, 'Kicks 1.6', 'Nissan', 'SAR3J80', 'Flex', '421DR54GTJ84F3EQ9', 'Preto', 2020, 2020, 00253195087 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.6; Potência(cv)=114; Torque(kgf.m)=15,5; Velocidade Máxima(km/h)=175; Consumo cidade(km/l)=7.8; Consumo estrada(km/l)=9', 'SUV');
+CALL cadastraVeiculo ('jac-t40_1_branco.jpg' , 210.00, 'T40 CVT', 'JAC', 'GRE2T47', 'Flex', '796HT90PL8J6TFE32', 'Branco', 2018, 2019, 00682095462 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.5; Potência(cv)=127; Torque(kgf.m)=15,7; Velocidade Máxima(km/h)=191; Consumo cidade(km/l)=8.1; Consumo estrada(km/l)=8.7', 'SUV');
+CALL cadastraVeiculo ('honda-hrv_1_azul.jpg' , 210.00, 'HR-V 1.8 LX CVT', 'Honda', 'GHT6U89', 'Flex', '458HF7JE92LPD09D8', 'Azul', 2019, 2019, 00732078536 ,'Ocupantes=5; Câmbio=CVT com modo manual; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=139; Torque(kgf.m)=17,7;Consumo cidade(km/l)=7.7; Consumo estrada(km/l)=8.6', 'SUV');
+CALL cadastraVeiculo ('honda-hrv_1_vinho.jpg' , 210.00, 'HR-V 1.8 LX CVT', 'Honda', 'FRT8I90', 'Flex', '264FR78IP0G23D5S7', 'Vinho', 2019, 2019, 00216573947 ,'Ocupantes=5; Câmbio=CVT com modo manual; Tração=dianteira; Direção=elétrica; Motorização=1.8; Potência(cv)=139; Torque(kgf.m)=17,7;Consumo cidade(km/l)=7.7; Consumo estrada(km/l)=8.6', 'SUV');
+CALL cadastraVeiculo ('nissan-kicks_1_branco.jpg' , 210.00, 'Kicks 1.6', 'Nissan', 'LOJ3G67', 'Flex', '175FR436Y78I904F4', 'Branco', 2020, 2020, 00647834521 ,'Ocupantes=5; Câmbio=manual de 5 marchas; Tração=dianteira; Direção=elétrica; Motorização=1.6; Potência(cv)=114; Torque(kgf.m)=15,5; Velocidade Máxima(km/h)=175; Consumo cidade(km/l)=7.8; Consumo estrada(km/l)=9', 'SUV');
+
+
+SELECT * FROM VEICULOS;
+CREATE VIEW informacoes_basicas AS
+SELECT Modelo as modelo_veiculo, Marca as marca_veiculo, Preco as preco_veiculo, TipoCombustivel as combustivel_veiculo, AnoModelo as anoModelo_veiculo, Genero as genero_veiculo, Imagem as imagem_veiculo
+FROM VEICULOS
