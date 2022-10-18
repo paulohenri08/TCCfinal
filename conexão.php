@@ -2,7 +2,7 @@
 
 $host = "Localhost" ;
 $user = "root";
-$pass = "#Ph42013537";
+$pass = "";
 $base = "astrocars";
 
 
