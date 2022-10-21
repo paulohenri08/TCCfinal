@@ -1,3 +1,33 @@
+<?php
+
+    if(isset($_POST['submit']))
+    {
+   //print_r('Nome: ' . $_POST['nome']);
+
+   include_once "conexão.php";
+
+   $nome = $_POST['nome'];
+   $nacionalidade = $_POST['nacionalidade'];
+   $tipoDocumento = $_POST['tipoDocumento'];
+   $documento = $_POST['documento'];
+   $telefone = $_POST['telefone'];
+   $endereco = $_POST['endereco'];
+   $cidade = $_POST['cidade'];
+   $estado = $_POST['estado'];
+   $data_nascimento = $_POST['data_nascimento'];
+   $CNH = $_POST['cnh'];
+   $genero = $_POST['genero'];
+   $email = $_POST['email'];
+   $senha = $_POST['senha'];
+
+   $result= mysqli_query($con, "INSERT INTO Clientes (Nome, Nacionalidade, TipoDocumento, Documento, Telefone, Endereco, Cidade, Estado, DataNascimento, CNH, Sexo, Email, Senha, Status_Cliente )
+   VALUES('$nome', '$nacionalidade', '$tipoDocumento', '$documento', '$telefone', '$endereco', '$cidade', '$estado', '$data_nascimento', '$CNH', '$genero', '$email', 
+   '$senha',
+   1)");
+
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
     
@@ -19,6 +49,9 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="styles.css" rel="stylesheet" />
         <style>
+            body{
+                color: black;
+            }
             .box {
     color: white;
     width: 50%;
@@ -105,19 +138,19 @@ legend{
                 
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Veiculos</a>
-                           <Ul class="phantomlist">
-                              
-                               <li class="lista1"><a href="">Picape</a></li>
-                               <li class="lista2"><a href="">SUV</a></li>
-                               <li class="lista3"><a href="">Hatch</a></li>
-                               <li class="lista4"><a href="">Premium</a></li>
-                               <li class="lista5"><a href="">Sedã</a></li>
-                
-                          </Ul>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="portfolio.php">Veiculos</a>
+                           <!-- <Ul class="phantomlist">
+                             
+                               <li class="lista1" value="picape"><a href="">Picape</a></li>
+                               <li class="lista2" value="suv"><a href="">SUV</a></li>                               
+                               <li class="lista3" value="hatch"><a href="">Hatch</a></li>
+                               <li class="lista4" value="premium"><a href="">Premium</a></li>                               
+                               <li class="lista5" value="seda"><a href="">Sedã</a></li>
+                               
+                          </Ul>-->
                         </li>
                         <li class="nav-item mx-0 mx-lg-2"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Minhas Reservas</a></li>
-				            		<li class="nav-item mx-0 mx-lg-3"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="login.php">Login</a></li>
+				            		<li class="nav-item mx-0 mx-lg-3"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="login.html">Login</a></li>
 						
                     </ul>
                 </div>
@@ -125,7 +158,7 @@ legend{
         </nav>
 	<section class="page-section" id="contact">
         <div class="box">
-            <form action="">
+            <form action="cadastro.php" method="POST">
                 <fieldset>
                     <legend><b>Cadastro</b></legend>
                 
