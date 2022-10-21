@@ -23,10 +23,11 @@ Genero VARCHAR(20) NOT NULL
 CREATE TABLE CLIENTES(
 Id_Cliente int primary key AUTO_INCREMENT not null,
 Nome VARCHAR(80) NOT NULL,
+Nacionalidade VARCHAR(50) NOT NULL,
 TipoDocumento VARCHAR(5) NOT NULL,
 Documento VARCHAR(11) NOT NULL,
 Imagem VARCHAR(280),
-Telefone INT NOT NULL,
+Telefone VARCHAR(20) NOT NULL,
 Endereco VARCHAR(50) NOT NULL,
 Cidade VARCHAR(50) NOT NULL,
 Estado VARCHAR(50) NOT NULL,
@@ -44,7 +45,7 @@ Nome VARCHAR(80) NOT NULL,
 CPF VARCHAR(11) NOT NULL,
 Cargo VARCHAR(40) NOT NULL,
 Imagem VARCHAR(280) NOT NULL,
-Telefone INT NOT NULL,
+Telefone VARCHAR(20) NOT NULL,
 Endereco VARCHAR(50) NOT NULL,
 Cidade VARCHAR(50) NOT NULL,
 Estado VARCHAR(50) NOT NULL,
@@ -152,3 +153,8 @@ SELECT * FROM VEICULOS;
 CREATE VIEW informacoes_basicas AS
 SELECT Modelo as modelo_veiculo, Marca as marca_veiculo, Preco as preco_veiculo, TipoCombustivel as combustivel_veiculo, AnoModelo as anoModelo_veiculo, Genero as genero_veiculo, Imagem as imagem_veiculo
 FROM VEICULOS
+
+select * from veiculos;
+update veiculos
+set Preco=240 
+where id_veiculo=1;
